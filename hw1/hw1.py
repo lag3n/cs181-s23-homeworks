@@ -146,10 +146,8 @@ plt.savefig("images/p2.1.png", bbox_inches = "tight")
 plt.show()
 
 # choose your value of k and calculate the loss
-for k in [1, 3, 55]:
+for k in [1, 3, N-1]:
     print(model_mse(predict_knn(year_test, k, year_train, temp_train), temp_test))
-
-
 
 
 

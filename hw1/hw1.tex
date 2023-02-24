@@ -152,7 +152,7 @@ Hint: consider what value of $\tau$ would be optimal, for $\tau$ ranging in $(0,
 
 Let $\{(x'_m, y'_m)\}_{m = 1} ^M$ denote the test set. Write down the form of the MSE of $f_\tau$ over the test set as a function of the training set and test set. Your answer may include $\{(x'_m, y'_m)\}_{m = 1} ^M$, $\{(x_n, y_n)\}_{n = 1} ^N$, and $K_\tau$, but not $f_\tau$.
 
-\item We now compute the MSE on the provided training set. Write Python code to compute the MSE with respect to the same lengthscales as in Part 1. Which model yields the lowest test set MSE? Is this consistent with what you observed in Part 1?
+\item We now compute the MSE on the provided test set. Write Python code to compute the MSE with respect to the same lengthscales as in Part 1. Which model yields the lowest test set MSE? Is this consistent with what you observed in Part 1?
 
 \item 
 Say you would like to send your friend your kernelized regressor, so that they can reproduce the same exact predictions as you. You of course will tell them the value of $\tau$ you selected, but what other information would they need, assuming they don't currently have any of your data or code? If our training set has size $N$, how does this amount of information grow as a function of $N$—that is, what is the space complexity of storing our model?
@@ -292,7 +292,7 @@ prior knowledge of any of the testing data, thus evaluating on
 the test set allows us to make stronger (but not definitive!) 
 claims on the generalizability of our model.
 
-Observe that there is never an objectively ``good'' value of MSE or likelihood - we can use them to compare models, but without context, they don't tell us whether or not our model performs well.
+Observe that there is never an objectively ``good'' value of MSE or negative log likelihood - we can use them to compare models, but without context, they don't tell us whether or not our model performs well.
 
 For each basis function, complete three tasks and include the
 results in your writeup: 
@@ -301,18 +301,19 @@ results in your writeup:
 
 \item Assume that the data is distributed as 
 $y_i = \mathbf{w}^\top \mathbf{x}_i + \varepsilon$ where 
-$\varepsilon \sim \mathcal{N}(0, \sigma)$, we roll in the bias 
+$\varepsilon \sim \mathcal{N}(0, \sigma^2)$, we roll in the bias 
 $\mathbf{x}_i = \begin{bmatrix} 1 \\ x_i \end{bmatrix}$, and each data point
-is drawn independently. Find $\sigma_{\text{MLE}}$ (recall the formula from class!) and compute the 
-likelihood for your train and test sets. 
+is drawn independently. Find $\sigma_{\text{MLE}}$ and $\mathbf{w}_{\text{MLE}}$ (recall the formulas from class!) and use these to 
+compute the negative log-likelihood of a model with parameters $\sigma_{\text{MLE}}, \mathbf{w}_{\text{MLE}}$ on your train and test sets. 
+The following derives the likelihood.
 \begin{align*} p(\mathbf{y}\mid \mathbf{X},\mathbf{w},\sigma_{\text{MLE}}) 
-&= \prod_{i=1}^N \mathcal{N}(\mathbf{y}_i \mid \mathbf{w}^\top\mathbf{x_i}, \sigma_{\text{MLE}}) \\
+&= \prod_{i=1}^N \mathcal{N}(\mathbf{y}_i \mid \mathbf{w}^\top\mathbf{x_i}, \sigma_{\text{MLE}}^2) \\
 &= \prod_{i=1}^N \frac{1}{\sigma_{\text{MLE}}\sqrt{2\pi}}\exp\left(-\frac{(y_i - \mathbf{w}^\top \mathbf{x}_i)^2}{2\sigma_{\text{MLE}}^2}\right)
 \end{align*}
 
 \item Make a claim regarding whether this basis overfits, 
 underfits, or fits well. Write 1-2 sentences explaining your 
-claim using the train and test likelihood and MSE.
+claim using the train and test negative log-likelihood and MSE.
 
 \end{itemize}
 \item For the third time, you wish to send your friend your model. Lets say you fitted some weight vector of dimension $D$. What information would you need to share with your friend for them to perform the same predictions as you? Do you need to share your entire training set with them this time? Again, what is the space complexity of storing your model?
